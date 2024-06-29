@@ -83,10 +83,9 @@ scene.add(camera);
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-
-// Set vertical rotation limits
 controls.minPolarAngle = Math.PI / 4; // 45 degrees from the top
 controls.maxPolarAngle = Math.PI / 2; // 90 degrees from the top, adjust as needed
+controls.enableZoom = false; // Disable zooming
 
 // Update controls
 controls.update();
