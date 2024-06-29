@@ -64,7 +64,7 @@ const sizes = {
 };
 
 const aspect = sizes.width / sizes.height;
-const frustumSize = 20; // Adjust this value to control the zoom level of the orthographic camera
+const frustumSize = 14; // Adjust this value to control the zoom level of the orthographic camera
 
 // Camera
 const camera = new THREE.OrthographicCamera(
