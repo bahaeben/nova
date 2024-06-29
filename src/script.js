@@ -10,14 +10,14 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
  */
 
 // Get the model file from the URL parameters
-const basePath = "/nova";
-const urlPath = window.location.pathname.replace(basePath, "").split("/");
-const modelName = urlPath[1]; // e.g., 'model1.glb'
-const configurations = urlPath[2] ? urlPath[2].split(",") : []; // e.g., ['siding-color_SpaceBlack', 'wood-finish_None']
+const basePath = "/nova/";
+const urlPath = window.location.pathname.replace(basePath, "").split(",");
+const modelName = urlPath[0]; // e.g., 'tiny_home'
+const configurations = urlPath.slice(1); // e.g., ['cat1_option1', 'cat2_option2']
 
 // Define customizations for each model
 const customizations = {
-  "tiny_home.glb": {
+  tiny_home: {
     options: {
       "siding-color": "Space Black",
       "wood-finish": "None",
@@ -31,7 +31,7 @@ const customizations = {
         this.options["wood-finish"] = option.value;
         this.updateWoodFinish(option.value);
       }
-      updateURL();
+      // updateURL();
     },
     updateSidingColor: function (option) {
       // Function to handle option changes for model 1
