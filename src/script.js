@@ -51,8 +51,9 @@ const canvas = document.querySelector("canvas.webgl");
 
 // Scene
 const scene = new THREE.Scene();
-const color = "#F5F1E9"; // Replace with your desired color
-scene.background = new THREE.Color(color);
+// const color = "#F5F1E9"; // Replace with your desired color
+// scene.background = new THREE.Color(color);
+scene.background = null; // Make the background transparent
 
 /**
  * Sizes
@@ -96,6 +97,7 @@ controls.update();
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
   antialias: true,
+  alpha: true, // Enable transparency
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
