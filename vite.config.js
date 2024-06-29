@@ -4,7 +4,7 @@ import glsl from "vite-plugin-glsl";
 export default {
   root: "src/",
   publicDir: "../static/",
-  base: "nova",
+  base: "/nova/",
   server: {
     host: true, // Open to local network and display URL
     open: !("SANDBOX_URL" in process.env || "CODESANDBOX_HOST" in process.env), // Open if it's not a CodeSandbox
@@ -19,7 +19,6 @@ export default {
       },
     },
   },
-  deploy: "sh deploy.sh",
 
   plugins: [
     restart({ restart: ["../static/**"] }), // Restart server on static file change

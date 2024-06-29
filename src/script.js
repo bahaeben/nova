@@ -10,7 +10,8 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
  */
 
 // Get the model file from the URL parameters
-const urlPath = window.location.pathname.split("/");
+const basePath = "/nova";
+const urlPath = window.location.pathname.replace(basePath, "").split("/");
 const modelName = urlPath[1]; // e.g., 'model1.glb'
 const configurations = urlPath[2] ? urlPath[2].split(",") : []; // e.g., ['siding-color_SpaceBlack', 'wood-finish_None']
 
