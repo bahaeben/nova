@@ -9,19 +9,17 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
  * Customization Handling
  */
 
-// Get the model file from the URL parameters
-const basePath = "/nova/";
-const urlPath = window.location.pathname.replace(basePath, "").split(",");
-const modelName = urlPath[0]; // e.g., 'tiny_home'
-const configurations = urlPath.slice(1); // e.g., ['cat1_option1', 'cat2_option2']
+// Set default model and options
+const defaultModelName = "tiny_home";
+const defaultOptions = {
+  "siding-color": "Space Black",
+  "wood-finish": "None",
+};
 
 // Define customizations for each model
 const customizations = {
   tiny_home: {
-    options: {
-      "siding-color": "Space Black",
-      "wood-finish": "None",
-    },
+    options: defaultOptions,
     updateFunction: function (option) {
       // Function to handle option changes for model 1
       if (option.type === "siding-color") {
@@ -31,7 +29,6 @@ const customizations = {
         this.options["wood-finish"] = option.value;
         this.updateWoodFinish(option.value);
       }
-      // updateURL();
     },
     updateSidingColor: function (option) {
       // Function to handle option changes for model 1
@@ -42,22 +39,12 @@ const customizations = {
   },
 };
 
-// Apply the customization based on the model name
-const selectedCustomization = customizations[modelName];
-
-// Apply configurations from URL
-configurations.forEach((config) => {
-  const [type, value] = config.split("_"); // e.g., ['siding-color', 'SpaceBlack']
-  selectedCustomization.updateFunction({ type, value });
-});
+// Apply the default customization
+const selectedCustomization = customizations[defaultModelName];
 
 /**
  * Base
  */
-// Debug
-// const gui = new GUI({
-//   width: 400,
-// });
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -156,7 +143,7 @@ dracoLoader.setDecoderPath("draco/");
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 
-gltfLoader.load(`${modelName}.glb`, (gltf) => {
+gltfLoader.load(`${defaultModelName}.glb`, (gltf) => {
   gltf.scene.traverse((child) => {
     if (child.isMesh) {
       // Check if the mesh name or material name contains 'glass'
