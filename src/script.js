@@ -1,4 +1,3 @@
-import GUI from "lil-gui";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -9,30 +8,10 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
  * Customization Handling
  */
 
-// Set default model and options
-const defaultModelName = "tiny_home";
-
-// Define default options for each model
-const defaultOptions = {
-  tiny_home: {
-    "siding-color": "Space Black",
-    "wood-finish": "None",
-    "side-1": "Balcony",
-    "side-4": "Window",
-    "side-6": "Window",
-    "solar-panel": "Yes",
-  },
-  another_model: {
-    "example-option": "default",
-    // Add other default options specific to this model
-  },
-  // Add other models and their default options here
-};
-
 // Define customizations for each model
 const customizations = {
   tiny_home: {
-    options: defaultOptions["tiny_home"],
+    options: {},
     updateFunction: function (option) {
       switch (option.type) {
         case "siding-color":
@@ -66,17 +45,16 @@ const customizations = {
     },
   },
   another_model: {
-    options: defaultOptions["another_model"],
+    options: {},
     updateFunction: function (option) {
       // Add option handling logic for another_model
     },
-    // Add update functions and handlers here
   },
   // Add other models and their customizations here
 };
 
 // Apply the default customization based on the model name
-const selectedCustomization = customizations[defaultModelName];
+const selectedCustomization = null;
 
 /**
  * Base
@@ -87,8 +65,6 @@ const canvas = document.querySelector("canvas.webgl");
 
 // Scene
 const scene = new THREE.Scene();
-// const color = "#F5F1E9"; // Replace with your desired color
-// scene.background = new THREE.Color(color);
 scene.background = null; // Make the background transparent
 
 /**
@@ -160,6 +136,7 @@ window.addEventListener("resize", () => {
 /**
  * Materials
  */
+
 let metalMaterial = null;
 
 // Define a glass material
@@ -285,62 +262,6 @@ dracoLoader.setDecoderPath("draco/");
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 
-gltfLoader.load(`${defaultModelName}.glb`, (gltf) => {
-  let found_metal = false;
-  gltf.scene.traverse((child) => {
-    if (child.isMesh) {
-      // Check if the mesh name or material name contains 'glass'
-      if (child.material && child.material.name.includes("glass")) {
-        child.material = glassMaterial;
-      }
-      if (!found_metal && child.name.includes("metal")) {
-        metalMaterial = child.material; // Store the reference to the metal material
-        found_metal = true;
-      }
-      if (child.name.includes("finish_wood")) {
-        finishWoodMeshes.push(child);
-      } else if (child.name.includes("exterior_metal")) {
-        exteriorMetalMeshes.push(child);
-      }
-    }
-    if (child.type === "Object3D") {
-      if (child.name.includes("solar_panel")) {
-        solarPanelGroup = child;
-      }
-      const match = child.name.match(
-        /container_(\d+)_wall_(\d+)_(none|window|balcony|door)/
-      );
-      if (match) {
-        if (match) {
-          const containerNum = match[1];
-          const wallNum = match[2];
-          const type = match[3];
-          if (
-            containers[`container_${containerNum}`] &&
-            containers[`container_${containerNum}`][`wall_${wallNum}`]
-          ) {
-            containers[`container_${containerNum}`][`wall_${wallNum}`][type] =
-              child;
-          }
-        }
-      }
-    }
-  });
-
-  const modelDefaults = defaultOptions[defaultModelName];
-  if (modelDefaults) {
-    Object.keys(modelDefaults).forEach((optionKey) => {
-      const optionValue = modelDefaults[optionKey];
-      customizations[defaultModelName].updateFunction({
-        type: optionKey,
-        value: optionValue,
-      });
-    });
-  }
-
-  scene.add(gltf.scene);
-});
-
 /**
  * Lights
  */
@@ -354,13 +275,6 @@ rgbeLoader.load("symmetrical_garden_02_1k.hdr", (environmentMap) => {
   scene.environment = environmentMap;
   scene.environmentIntensity = 0.5;
 });
-
-// // Create a box geometry with dimensions 1, 1, 1
-// const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-// const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
-// const referenceCube = new THREE.Mesh(boxGeometry, boxMaterial);
-// referenceCube.position.set(0, 5, -10);
-// scene.add(referenceCube);
 
 // Add a directional light
 const directionalLight = new THREE.DirectionalLight(0xffffff, 8); // Color and intensity
@@ -376,11 +290,6 @@ scene.add(keyLight);
 const fillLight = new THREE.DirectionalLight(0xffffff, 4); // Color and intensity
 fillLight.position.set(0, 5, -10); // Position the light
 scene.add(fillLight);
-
-// // Add a back light
-// const backLight = new THREE.DirectionalLight(0xffffff, 0.5); // Color and intensity
-// backLight.position.set(0, 10, -5); // Position the light
-// scene.add(backLight);
 
 /**
  * Animate
@@ -407,5 +316,68 @@ window.addEventListener("message", (event) => {
   if (event.data.type === "updateOption") {
     const option = event.data.option;
     selectedCustomization.updateFunction(option);
+  } else if (event.data.type === "initializeModel") {
+    const modelName = event.data.modelName;
+    const modelOptions = event.data.options;
+
+    // Load the model with the received options
+    loadModelWithCustomizations(modelName, modelOptions);
   }
 });
+
+function loadModelWithCustomizations(modelName, options) {
+  gltfLoader.load(`${modelName}.glb`, (gltf) => {
+    let found_metal = false;
+    gltf.scene.traverse((child) => {
+      if (child.isMesh) {
+        // Check if the mesh name or material name contains 'glass'
+        if (child.material && child.material.name.includes("glass")) {
+          child.material = glassMaterial;
+        }
+        if (!found_metal && child.name.includes("metal")) {
+          metalMaterial = child.material; // Store the reference to the metal material
+          found_metal = true;
+        }
+        if (child.name.includes("finish_wood")) {
+          finishWoodMeshes.push(child);
+        } else if (child.name.includes("exterior_metal")) {
+          exteriorMetalMeshes.push(child);
+        }
+      }
+      if (child.type === "Object3D") {
+        if (child.name.includes("solar_panel")) {
+          solarPanelGroup = child;
+        }
+        const match = child.name.match(
+          /container_(\d+)_wall_(\d+)_(none|window|balcony|door)/
+        );
+        if (match) {
+          if (match) {
+            const containerNum = match[1];
+            const wallNum = match[2];
+            const type = match[3];
+            if (
+              containers[`container_${containerNum}`] &&
+              containers[`container_${containerNum}`][`wall_${wallNum}`]
+            ) {
+              containers[`container_${containerNum}`][`wall_${wallNum}`][type] =
+                child;
+            }
+          }
+        }
+      }
+    });
+
+    // Apply received options
+    Object.keys(options).forEach((optionKey) => {
+      const optionValue = options[optionKey];
+      customizations[modelName].updateFunction({
+        type: optionKey,
+        value: optionValue,
+      });
+    });
+
+    // Add the model to the scene after applying options
+    scene.add(gltf.scene);
+  });
+}
