@@ -44,14 +44,14 @@ export const update_siding_color = (color) => {
     case "Space Black":
       color_value = "#2F2F2F";
       break;
-    case "Off White":
-      color_value = "#F5F1E9";
-      break;
     case "Slate Grey":
-      color_value = "#7798A5";
+      color_value = "#808080";
       break;
-    case "Soft Beige":
-      color_value = "#E5DBC7";
+    case "Chestnut Brown":
+      color_value = "#954535";
+      break;
+    case "Warm Beige":
+      color_value = "#D2B48C";
       break;
     default:
       console.warn(`Unhandled siding color: ${color}`);
