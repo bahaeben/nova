@@ -15,6 +15,7 @@ export const init_scene = () => {
   const aspect = sizes.width / sizes.height;
   const frustum_size = 12;
 
+  // Orthographic Camera
   const camera = new THREE.OrthographicCamera(
     (frustum_size * aspect) / -2,
     (frustum_size * aspect) / 2,
@@ -26,9 +27,19 @@ export const init_scene = () => {
   camera.position.set(9, 3, 9);
   scene.add(camera);
 
+  // Perspective Camera
+  //   const camera = new THREE.PerspectiveCamera(
+  //     60, // Field of view
+  //     sizes.width / sizes.height, // Aspect ratio
+  //     0.1, // Near clipping plane
+  //     1000 // Far clipping plane
+  //   );
+  //   camera.position.set(9, 3, 9);
+  //   scene.add(camera);
+
   const controls = new OrbitControls(camera, canvas);
   controls.enableDamping = true;
-  controls.minPolarAngle = Math.PI / 4;
+  controls.minPolarAngle = Math.PI / 6;
   controls.maxPolarAngle = Math.PI / 2;
   controls.enableZoom = false;
   controls.target.set(0, 1, 0);
@@ -47,6 +58,9 @@ export const init_scene = () => {
     sizes.height = window.innerHeight;
     const aspect = sizes.width / sizes.height;
 
+    // Updating Perspective Camera on resize
+    // camera.aspect = sizes.width / sizes.height;
+
     camera.left = (-frustum_size * aspect) / 2;
     camera.right = (frustum_size * aspect) / 2;
     camera.top = frustum_size / 2;
@@ -62,18 +76,18 @@ export const init_scene = () => {
   rgbe_loader.load("symmetrical_garden_02_1k.hdr", (environment_map) => {
     environment_map.mapping = THREE.EquirectangularReflectionMapping;
     scene.environment = environment_map;
-    scene.environmentIntensity = 0.5;
+    scene.environmentIntensity = 2;
   });
 
-  const directional_light = new THREE.DirectionalLight(0xffffff, 8);
+  const directional_light = new THREE.DirectionalLight(0xffffff, 1.5);
   directional_light.position.set(-5, 5, 10);
   scene.add(directional_light);
 
-  const key_light = new THREE.DirectionalLight(0xffffff, 4);
+  const key_light = new THREE.DirectionalLight(0xffffff, 0.5);
   key_light.position.set(10, 5, 2);
   scene.add(key_light);
 
-  const fill_light = new THREE.DirectionalLight(0xffffff, 4);
+  const fill_light = new THREE.DirectionalLight(0xffffff, 0.5);
   fill_light.position.set(0, 5, -10);
   scene.add(fill_light);
 
