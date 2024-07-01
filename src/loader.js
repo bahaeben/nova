@@ -10,7 +10,7 @@ import {
   set_metal_material,
   containers,
 } from "./update_functions.js";
-import { customizations } from "./customizations.js"; // Import customizations
+import { customizations } from "./customizations.js";
 
 const draco_loader = new DRACOLoader();
 draco_loader.setDecoderPath("draco/");
@@ -18,9 +18,19 @@ draco_loader.setDecoderPath("draco/");
 const gltf_loader = new GLTFLoader();
 gltf_loader.setDRACOLoader(draco_loader);
 
+let current_model = null; // Reference to the currently loaded model
+
 export const load_model_with_customizations = (model_name, options, scene) => {
+  // Remove the current model from the scene if it exists
+  if (current_model) {
+    scene.remove(current_model);
+    current_model = null;
+    finish_wood_meshes.length = 0;
+    exterior_metal_meshes.length = 0;
+  }
+
   gltf_loader.load(`models/${model_name}.glb`, (gltf) => {
-    let found_metal = false; // Changed to let
+    let found_metal = false;
     gltf.scene.traverse((child) => {
       if (child.isMesh) {
         if (child.material && child.material.name.includes("glass")) {
@@ -66,10 +76,7 @@ export const load_model_with_customizations = (model_name, options, scene) => {
       });
     });
 
-    if (scene) {
-      scene.add(gltf.scene); // Ensure scene is defined
-    } else {
-      console.error("Scene is not defined.");
-    }
+    scene.add(gltf.scene);
+    current_model = gltf.scene; // Set the current model
   });
 };
