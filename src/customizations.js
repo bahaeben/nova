@@ -20,10 +20,10 @@ export const customizations = {
         position: new THREE.Vector3(-9, 3, -9),
       },
       "side-6": {
-        position: new THREE.Vector3(12.5, 1, 0),
+        position: new THREE.Vector3(12.3, 3, 0),
       },
       "solar-panel": {
-        position: new THREE.Vector3(0, 12, 6.5),
+        position: new THREE.Vector3(0, 8, 10),
       },
     },
     update_function: (option) => {
@@ -110,7 +110,8 @@ export const handle_messages = (scene, camera, controls, renderer) => {
         model_options,
         scene,
         camera,
-        renderer
+        renderer,
+        controls
       );
     }
   });

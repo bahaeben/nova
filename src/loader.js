@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import TWEEN from "@tweenjs/tween.js"; // Import TWEEN
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import {
@@ -25,7 +26,8 @@ export const load_model_with_customizations = (
   options,
   scene,
   camera,
-  renderer
+  renderer,
+  controls
 ) => {
   // Remove the current model from the scene if it exists
   if (current_model) {
@@ -87,6 +89,24 @@ export const load_model_with_customizations = (
 
     scene.add(gltf.scene);
     current_model = gltf.scene; // Set the current model
+
+    // Animate the camera from the front view to the regular position
+    const initial_position = { x: 0, y: 1, z: 12.8 };
+    const final_position = { x: 9, y: 3, z: 9 };
+
+    camera.position.set(
+      initial_position.x,
+      initial_position.y,
+      initial_position.z
+    );
+
+    new TWEEN.Tween(camera.position)
+      .to(final_position, 2000) // Animate to the final position over 2 seconds
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .onUpdate(() => {
+        controls.update();
+      })
+      .start();
 
     // Ensure the scene is properly resized and rendered
     window.dispatchEvent(new Event("resize"));
