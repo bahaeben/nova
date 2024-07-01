@@ -20,7 +20,13 @@ gltf_loader.setDRACOLoader(draco_loader);
 
 let current_model = null; // Reference to the currently loaded model
 
-export const load_model_with_customizations = (model_name, options, scene) => {
+export const load_model_with_customizations = (
+  model_name,
+  options,
+  scene,
+  camera,
+  renderer
+) => {
   // Remove the current model from the scene if it exists
   if (current_model) {
     scene.remove(current_model);
@@ -68,15 +74,22 @@ export const load_model_with_customizations = (model_name, options, scene) => {
       }
     });
 
+    // Apply the received options
     Object.keys(options).forEach((option_key) => {
       const option_value = options[option_key];
-      customizations[model_name].update_function({
-        type: option_key,
-        value: option_value,
-      });
+      if (customizations[model_name]) {
+        customizations[model_name].update_function({
+          type: option_key,
+          value: option_value,
+        });
+      }
     });
 
     scene.add(gltf.scene);
     current_model = gltf.scene; // Set the current model
+
+    // Ensure the scene is properly resized and rendered
+    window.dispatchEvent(new Event("resize"));
+    renderer.render(scene, camera); // Force render after loading the model
   });
 };

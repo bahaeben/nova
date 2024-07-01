@@ -52,11 +52,14 @@ export const customizations = {
 // Placeholder for selected customization
 let selected_customization = null;
 
-export const handle_messages = (scene) => {
+export const handle_messages = (scene, camera, renderer) => {
   window.addEventListener("message", (event) => {
     if (event.data.type === "updateOption") {
       const option = event.data.option;
-      selected_customization.update_function(option);
+      if (selected_customization) {
+        selected_customization.update_function(option);
+        renderer.render(scene, camera); // Force render after updating
+      }
     } else if (event.data.type === "initializeModel") {
       const model_name = event.data.modelName;
       const model_options = event.data.options;
@@ -65,7 +68,13 @@ export const handle_messages = (scene) => {
       selected_customization = customizations[model_name];
 
       // Load the model with the received options
-      load_model_with_customizations(model_name, model_options, scene);
+      load_model_with_customizations(
+        model_name,
+        model_options,
+        scene,
+        camera,
+        renderer
+      );
     }
   });
 };

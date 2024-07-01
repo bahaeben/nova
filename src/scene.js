@@ -55,6 +55,7 @@ export const init_scene = () => {
 
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.render(scene, camera); // Force render after resize
   });
 
   const rgbe_loader = new RGBELoader();
