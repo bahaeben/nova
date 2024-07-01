@@ -54,8 +54,6 @@ export const init_scene = () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   const resizeCamera = () => {
-    console.log(camera.position);
-
     sizes.width = window.innerWidth;
     sizes.height = window.innerHeight;
 
