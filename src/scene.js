@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import TWEEN from "@tweenjs/tween.js"; // Import TWEEN
 
 export const init_scene = () => {
   const canvas = document.querySelector("canvas.webgl");
@@ -12,7 +13,6 @@ export const init_scene = () => {
     height: window.innerHeight,
   };
 
-  const aspect = sizes.width / sizes.height;
   const frustum_size = 13;
 
   // Orthographic Camera
@@ -54,10 +54,11 @@ export const init_scene = () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   const resizeCamera = () => {
+    console.log(camera.position);
+
     sizes.width = window.innerWidth;
     sizes.height = window.innerHeight;
 
-    const minDimension = Math.min(sizes.width, sizes.height);
     const aspect = sizes.width / sizes.height;
 
     if (sizes.width < sizes.height) {
@@ -107,6 +108,7 @@ export const animate = (camera, controls, renderer, scene) => {
 
   const tick = () => {
     controls.update();
+    TWEEN.update(); // Update TWEEN animations
     renderer.render(scene, camera);
     window.requestAnimationFrame(tick);
   };

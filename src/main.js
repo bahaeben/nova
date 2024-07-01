@@ -8,4 +8,4 @@ const { camera, controls, renderer, scene } = init_scene();
 animate(camera, controls, renderer, scene);
 
 // Set up message handling from Webflow
-handle_messages(scene, camera, renderer);
+handle_messages(scene, camera, controls, renderer);
