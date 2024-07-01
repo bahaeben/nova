@@ -17,7 +17,7 @@ export const customizations = {
         position: new THREE.Vector3(9, 3, 9),
       },
       "side-4": {
-        position: new THREE.Vector3(-9, 3, -9),
+        position: new THREE.Vector3(0, 3, -12.3),
       },
       "side-6": {
         position: new THREE.Vector3(12.3, 3, 0),
@@ -73,14 +73,19 @@ const update_camera_rotation = (option, camera, controls) => {
     const camera_position =
       selected_customization.camera_positions[option.type];
     if (camera_position) {
-      new TWEEN.Tween(camera.position)
-        .to(camera_position.position, 1000)
-        .easing(TWEEN.Easing.Quadratic.InOut)
-        .onUpdate(() => {
-          controls.update();
-        })
-        .onComplete(resolve) // Resolve the promise after rotation is complete
-        .start();
+      const distance = camera.position.distanceTo(camera_position.position);
+      if (distance > 1) {
+        new TWEEN.Tween(camera.position)
+          .to(camera_position.position, 1000)
+          .easing(TWEEN.Easing.Quadratic.InOut)
+          .onUpdate(() => {
+            controls.update();
+          })
+          .onComplete(resolve) // Resolve the promise after rotation is complete
+          .start();
+      } else {
+        resolve(); // If within 1 meter, resolve the promise immediately
+      }
     } else {
       resolve(); // If no camera position, resolve the promise immediately
     }
