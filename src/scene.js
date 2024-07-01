@@ -13,14 +13,14 @@ export const init_scene = () => {
   };
 
   const aspect = sizes.width / sizes.height;
-  const frustum_size = 12;
+  const frustum_size = 13;
 
   // Orthographic Camera
   const camera = new THREE.OrthographicCamera(
-    (frustum_size * aspect) / -2,
-    (frustum_size * aspect) / 2,
+    -frustum_size / 2,
     frustum_size / 2,
-    frustum_size / -2,
+    frustum_size / 2,
+    -frustum_size / 2,
     0.1,
     100
   );
@@ -53,24 +53,32 @@ export const init_scene = () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  window.addEventListener("resize", () => {
+  const resizeCamera = () => {
     sizes.width = window.innerWidth;
     sizes.height = window.innerHeight;
+
+    const minDimension = Math.min(sizes.width, sizes.height);
     const aspect = sizes.width / sizes.height;
 
-    // Updating Perspective Camera on resize
-    // camera.aspect = sizes.width / sizes.height;
-
-    camera.left = (-frustum_size * aspect) / 2;
-    camera.right = (frustum_size * aspect) / 2;
-    camera.top = frustum_size / 2;
-    camera.bottom = -frustum_size / 2;
+    if (sizes.width < sizes.height) {
+      camera.left = -frustum_size / 2;
+      camera.right = frustum_size / 2;
+      camera.top = frustum_size / aspect / 2;
+      camera.bottom = -(frustum_size / aspect) / 2;
+    } else {
+      camera.left = -(frustum_size * aspect) / 2;
+      camera.right = (frustum_size * aspect) / 2;
+      camera.top = frustum_size / 2;
+      camera.bottom = -frustum_size / 2;
+    }
     camera.updateProjectionMatrix();
 
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.render(scene, camera); // Force render after resize
-  });
+  };
+
+  window.addEventListener("resize", resizeCamera);
 
   const rgbe_loader = new RGBELoader();
   rgbe_loader.load("symmetrical_garden_02_1k.hdr", (environment_map) => {
