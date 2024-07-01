@@ -8,32 +8,32 @@ import {
 
 // Define customizations for each model
 export const customizations = {
-  "tiny-home": {
+  "solo-haven": {
     options: {},
     update_function: (option) => {
       switch (option.type) {
         case "siding-color":
-          customizations["tiny-home"].options["siding-color"] = option.value;
+          customizations["solo-haven"].options["siding-color"] = option.value;
           update_siding_color(option.value);
           break;
         case "wood-finish":
-          customizations["tiny-home"].options["wood-finish"] = option.value;
+          customizations["solo-haven"].options["wood-finish"] = option.value;
           update_wood_finish(option.value);
           break;
         case "side-1":
-          customizations["tiny-home"].options["side-1"] = option.value;
+          customizations["solo-haven"].options["side-1"] = option.value;
           update_wall(1, 1, option.value);
           break;
         case "side-4":
-          customizations["tiny-home"].options["side-4"] = option.value;
+          customizations["solo-haven"].options["side-4"] = option.value;
           update_wall(1, 4, option.value);
           break;
         case "side-6":
-          customizations["tiny-home"].options["side-6"] = option.value;
+          customizations["solo-haven"].options["side-6"] = option.value;
           update_wall(1, 6, option.value);
           break;
         case "solar-panel":
-          customizations["tiny-home"].options["solar-panel"] = option.value;
+          customizations["solo-haven"].options["solar-panel"] = option.value;
           update_solar_panel(option.value);
           break;
         default:

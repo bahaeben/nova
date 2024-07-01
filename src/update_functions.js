@@ -51,7 +51,7 @@ export const update_siding_color = (color) => {
       color_value = "#954535";
       break;
     case "Warm Beige":
-      color_value = "#D2B48C";
+      color_value = "#B48546";
       break;
     default:
       console.warn(`Unhandled siding color: ${color}`);
