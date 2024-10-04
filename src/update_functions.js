@@ -1,5 +1,10 @@
 import * as THREE from "three";
 
+/**
+ * This script takes care of updating and applying options on the 3D model
+ * Exports a set of functions each take care of a specific type of customization
+ */
+
 let metal_material = null;
 export const finish_wood_meshes = [];
 export const exterior_metal_meshes = [];

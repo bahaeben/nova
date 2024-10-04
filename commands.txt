@@ -1,0 +1,28 @@
+// inline console event
+
+// Create model
+const testEventData = {
+  type: "initializeModel",
+  modelName: "solo-haven",
+  options: {
+    "siding-color": "Chestnut Brown",
+    "wood-finish": "None",
+    "side-1": "Balcony",
+    "side-4": "Balcony",
+    "side-6": "Balcony",
+    "solar-panel": "Yes"
+  }
+};
+
+window.postMessage(testEventData, "*");
+
+// Choose option
+const eventData = {
+    type: 'updateOption',
+    option: {
+        type: 'side-4', // Change this to test different options
+        value: 'Window' // Change this to the desired value
+    }
+};
+
+window.postMessage(eventData, '*');

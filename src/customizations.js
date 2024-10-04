@@ -8,6 +8,11 @@ import {
 import * as THREE from "three";
 import TWEEN from "@tweenjs/tween.js"; // Import TWEEN
 
+/**
+ * This script takes care of catching events of initializing models or updating options
+ * Handle messages and apply neccessary changes and catches unexpected outcomes
+ */
+
 // Define customizations for each model
 export const customizations = {
   "solo-haven": {
@@ -47,6 +52,114 @@ export const customizations = {
         case "side-6":
           customizations["solo-haven"].options["side-6"] = option.value;
           update_wall(1, 6, option.value);
+          break;
+        case "solar-panel":
+          customizations["solo-haven"].options["solar-panel"] = option.value;
+          update_solar_panel(option.value);
+          break;
+        default:
+          console.warn(`Unhandled option type: ${option.type}`);
+      }
+    },
+  },
+  "duo-oasis": {
+    options: {},
+    camera_positions: {
+      "side-4": {
+        position: new THREE.Vector3(0, 3, -12.3),
+      },
+      "side-6": {
+        position: new THREE.Vector3(12.3, 3, 0),
+      },
+      "side-7": {
+        position: new THREE.Vector3(9, 3, 9),
+      },
+      "side-12": {
+        position: new THREE.Vector3(12.3, 3, 0),
+      },
+      "solar-panel": {
+        position: new THREE.Vector3(0, 8, 10),
+      },
+    },
+    update_function: (option) => {
+      switch (option.type) {
+        case "siding-color":
+          customizations["solo-haven"].options["siding-color"] = option.value;
+          update_siding_color(option.value);
+          break;
+        case "wood-finish":
+          customizations["solo-haven"].options["wood-finish"] = option.value;
+          update_wood_finish(option.value);
+          break;
+        case "side-4":
+          customizations["solo-haven"].options["side-4"] = option.value;
+          update_wall(1, 4, option.value);
+          break;
+        case "side-6":
+          customizations["solo-haven"].options["side-6"] = option.value;
+          update_wall(1, 6, option.value);
+          break;
+        case "side-7":
+          customizations["solo-haven"].options["side-1"] = option.value;
+          update_wall(2, 1, option.value);
+          break;
+        case "side-12":
+          customizations["solo-haven"].options["side-6"] = option.value;
+          update_wall(2, 6, option.value);
+          break;
+        case "solar-panel":
+          customizations["solo-haven"].options["solar-panel"] = option.value;
+          update_solar_panel(option.value);
+          break;
+        default:
+          console.warn(`Unhandled option type: ${option.type}`);
+      }
+    },
+  },
+  "skyline-loft": {
+    options: {},
+    camera_positions: {
+      "side-4": {
+        position: new THREE.Vector3(0, 3, -12.3),
+      },
+      "side-6": {
+        position: new THREE.Vector3(12.3, 3, 0),
+      },
+      "side-7": {
+        position: new THREE.Vector3(-12.3, 3, 0),
+      },
+      "side-12": {
+        position: new THREE.Vector3(0, 3, 12.3),
+      },
+      "solar-panel": {
+        position: new THREE.Vector3(0, 8, 10),
+      },
+    },
+    update_function: (option) => {
+      switch (option.type) {
+        case "siding-color":
+          customizations["solo-haven"].options["siding-color"] = option.value;
+          update_siding_color(option.value);
+          break;
+        case "wood-finish":
+          customizations["solo-haven"].options["wood-finish"] = option.value;
+          update_wood_finish(option.value);
+          break;
+        case "side-4":
+          customizations["solo-haven"].options["side-4"] = option.value;
+          update_wall(1, 4, option.value);
+          break;
+        case "side-6":
+          customizations["solo-haven"].options["side-6"] = option.value;
+          update_wall(1, 6, option.value);
+          break;
+        case "side-7":
+          customizations["solo-haven"].options["side-1"] = option.value;
+          update_wall(2, 1, option.value);
+          break;
+        case "side-12":
+          customizations["solo-haven"].options["side-6"] = option.value;
+          update_wall(2, 6, option.value);
           break;
         case "solar-panel":
           customizations["solo-haven"].options["solar-panel"] = option.value;

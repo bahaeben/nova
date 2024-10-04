@@ -6,12 +6,15 @@ import {
   glass_material,
   finish_wood_meshes,
   exterior_metal_meshes,
-  get_solar_panel_group,
   set_solar_panel_group,
   set_metal_material,
   containers,
 } from "./update_functions.js";
 import { customizations } from "./customizations.js";
+
+/**
+ * Responsible of initializing 3JS necessary elements
+ */
 
 const draco_loader = new DRACOLoader();
 draco_loader.setDecoderPath("draco/");
