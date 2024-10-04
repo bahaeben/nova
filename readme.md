@@ -24,18 +24,18 @@ npm run build
 
 The project is designed to handle 3D models and is controlled via messages. Below are the two primary message formats used to interact with the 3D views
 
-Home models are: "solo-haven","duo-oasis" or "skyline-loft".
-Siding color options are: "Space Black", "Slate Grey", "Chestnut Brown" or "Warm Beige".
-Wood finish options are: "Yes", "None".
-Side options are: "None", "Window" or "Balcony" // not all of them are customizable.
-Solar Panel options are: "Yes", "None".
+- Home models are: "solo-haven","duo-oasis" or "skyline-loft".
+- Siding color options are: "Space Black", "Slate Grey", "Chestnut Brown" or "Warm Beige".
+- Wood finish options are: "Yes", "None".
+- Side options are: "None", "Window" or "Balcony" // not all of them are customizable.
+- Solar Panel options are: "Yes", "None".
 
 ### Initialize a Model
 
 To create and initialize a model, send the following message //use console
 
 ```javascript
-const testEventData = {
+const eventData = {
   type: "initializeModel",
   modelName: "skyline-loft",
   options: {
@@ -49,7 +49,7 @@ const testEventData = {
   },
 };
 
-window.postMessage(testEventData, "*");
+window.postMessage(eventData, "*");
 ```
 
 ### Update Model Options
