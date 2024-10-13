@@ -26,9 +26,9 @@ The project is designed to handle 3D models and is controlled via messages. Belo
 
 - Home models are: "solo-haven","duo-oasis" or "skyline-loft".
 - Siding color options are: "Space Black", "Slate Grey", "Chestnut Brown" or "Warm Beige".
-- Wood finish options are: "Yes", "None".
-- Side options are: "None", "Window" or "Balcony" // not all of them are customizable.
-- Solar Panel options are: "Yes", "None".
+- Wood finish options are: "Redwood siding finish", "Metallic siding finish".
+- Side options are: "Regular Wall", "Window glass" or "Full size glass" // not all of them are customizable.
+- Solar Panel options are: "3x Solar panels", "No Add".
 
 ### Initialize a Model
 
@@ -40,12 +40,12 @@ const eventData = {
   modelName: "skyline-loft",
   options: {
     "siding-color": "Space Black",
-    "wood-finish": "None",
-    "side-4": "Balcony",
-    "side-6": "Balcony",
-    "side-7": "Balcony",
-    "side-12": "Balcony",
-    "solar-panel": "Yes",
+    "wood-finish": "Metallic siding finish",
+    "side-4": "Regular Wall",
+    "side-6": "Full size glass",
+    "side-7": "Full size glass",
+    "side-12": "Window glass",
+    "solar-panel": "3x Solar panels",
   },
 };
 
@@ -61,7 +61,7 @@ const eventData = {
   type: "updateOption",
   option: {
     type: "side-12", // Change this to test different options
-    value: "Balcony", // Change this to the desired value
+    value: "Full size glass", // Change this to the desired value
   },
 };
 

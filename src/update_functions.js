@@ -79,13 +79,13 @@ export const update_wall = (container_num, wall_num, option) => {
   }
 
   switch (option) {
-    case "None":
+    case "Regular Wall":
       if (wall.none) wall.none.visible = true;
       if (wall.window) wall.window.visible = false;
       if (wall.door) wall.door.visible = false;
       if (wall.balcony) wall.balcony.visible = false;
       break;
-    case "Window":
+    case "Window glass":
       if (wall.none) wall.none.visible = false;
       if (wall.window) wall.window.visible = true;
       if (wall.door) wall.door.visible = false;
@@ -97,7 +97,7 @@ export const update_wall = (container_num, wall_num, option) => {
       if (wall.door) wall.door.visible = true;
       if (wall.balcony) wall.balcony.visible = false;
       break;
-    case "Balcony":
+    case "Full size glass":
       if (wall.none) wall.none.visible = false;
       if (wall.window) wall.window.visible = false;
       if (wall.door) wall.door.visible = false;
@@ -109,10 +109,10 @@ export const update_wall = (container_num, wall_num, option) => {
 };
 
 export const update_wood_finish = (option) => {
-  if (option === "Yes") {
+  if (option === "Redwood siding finish") {
     finish_wood_meshes.forEach((mesh) => (mesh.visible = true));
     exterior_metal_meshes.forEach((mesh) => (mesh.visible = false));
-  } else if (option === "None") {
+  } else if (option === "Metallic siding finish") {
     finish_wood_meshes.forEach((mesh) => (mesh.visible = false));
     exterior_metal_meshes.forEach((mesh) => (mesh.visible = true));
   }
@@ -121,6 +121,6 @@ export const update_wood_finish = (option) => {
 export const update_solar_panel = (option) => {
   const group = get_solar_panel_group();
   if (group) {
-    group.visible = option === "Yes";
+    group.visible = option === "3x Solar panels";
   }
 };
