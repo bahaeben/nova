@@ -18,6 +18,9 @@ npm run dev
 
 # Build for production in the dist/ directory
 npm run build
+
+# Deploy to GitHub Pages (only if you want to push the build to gh-pages)
+npm run deploy
 ```
 
 ## Usage
