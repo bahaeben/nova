@@ -6,7 +6,8 @@ import {
   update_solar_panel,
 } from "./update_functions.js";
 import * as THREE from "three";
-import TWEEN from "@tweenjs/tween.js"; // Import TWEEN
+
+import { gsap } from "gsap"; // Import GSAP
 
 /**
  * This script takes care of catching events of initializing models or updating options
@@ -188,14 +189,18 @@ const update_camera_rotation = (option, camera, controls) => {
     if (camera_position) {
       const distance = camera.position.distanceTo(camera_position.position);
       if (distance > 1) {
-        new TWEEN.Tween(camera.position)
-          .to(camera_position.position, 1000)
-          .easing(TWEEN.Easing.Quadratic.InOut)
-          .onUpdate(() => {
+        // Use GSAP to animate the camera position
+        gsap.to(camera.position, {
+          x: camera_position.position.x,
+          y: camera_position.position.y,
+          z: camera_position.position.z,
+          duration: 1, // 1000ms or 1 second
+          ease: "power1.inOut", // Equivalent to Quadratic.InOut easing
+          onUpdate: () => {
             controls.update();
-          })
-          .onComplete(resolve) // Resolve the promise after rotation is complete
-          .start();
+          },
+          onComplete: resolve, // Resolve the promise after rotation is complete
+        });
       } else {
         resolve(); // If within 1 meter, resolve the promise immediately
       }

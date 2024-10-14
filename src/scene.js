@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import TWEEN from "@tweenjs/tween.js"; // Import TWEEN
+
+import { gsap } from "gsap"; // Import GSAP
 
 export const init_scene = () => {
   const canvas = document.querySelector("canvas.webgl");
@@ -105,11 +106,10 @@ export const animate = (camera, controls, renderer, scene) => {
   const clock = new THREE.Clock();
 
   const tick = () => {
-    controls.update();
-    TWEEN.update(); // Update TWEEN animations
-    renderer.render(scene, camera);
-    window.requestAnimationFrame(tick);
+    controls.update(); // Update camera controls
+    renderer.render(scene, camera); // Render the scene
+    window.requestAnimationFrame(tick); // Continue the animation loop
   };
 
-  tick();
+  tick(); // Start the animation loop
 };

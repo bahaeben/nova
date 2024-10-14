@@ -1,5 +1,5 @@
-import * as THREE from "three";
-import TWEEN from "@tweenjs/tween.js"; // Import TWEEN
+import { gsap } from "gsap"; // Import GSAP
+
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import {
@@ -103,13 +103,16 @@ export const load_model_with_customizations = (
       initial_position.z
     );
 
-    new TWEEN.Tween(camera.position)
-      .to(final_position, 2000) // Animate to the final position over 2 seconds
-      .easing(TWEEN.Easing.Quadratic.Out)
-      .onUpdate(() => {
-        controls.update();
-      })
-      .start();
+    gsap.to(camera.position, {
+      x: final_position.x,
+      y: final_position.y,
+      z: final_position.z,
+      duration: 2, // 2000ms = 2 seconds
+      ease: "power2.out", // Equivalent to TWEEN.Easing.Quadratic.Out
+      onUpdate: () => {
+        controls.update(); // Ensure the camera controls are updated during the animation
+      },
+    });
 
     // Ensure the scene is properly resized and rendered
     window.dispatchEvent(new Event("resize"));
