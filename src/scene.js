@@ -43,6 +43,7 @@ export const init_scene = () => {
   controls.minPolarAngle = Math.PI / 6;
   controls.maxPolarAngle = Math.PI / 2;
   controls.enableZoom = false;
+  controls.enablePan = false;
   controls.target.set(0, 1, 0);
   controls.update();
 

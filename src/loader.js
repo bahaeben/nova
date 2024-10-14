@@ -1,4 +1,5 @@
 import { gsap } from "gsap"; // Import GSAP
+import * as THREE from "three";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
@@ -13,13 +14,51 @@ import {
 import { customizations } from "./customizations.js";
 
 /**
+ * Initialize loading manager and loading state
+ */
+
+// Create the loading manager
+const loading_manager = new THREE.LoadingManager();
+
+// Show the loading bar when loading starts
+loading_manager.onStart = () => {
+  const loading_bar_container = document.getElementById(
+    "loading-bar-container"
+  );
+  loading_bar_container.style.display = "block"; // Make sure it's visible
+  loading_bar_container.style.opacity = "1"; // Reset the opacity
+  document.getElementById("loading-bar").style.width = "0"; // Reset the bar's width
+};
+
+// Update the loading bar's progress
+loading_manager.onProgress = (url, items_loaded, items_total) => {
+  const progress = (items_loaded / items_total) * 100;
+  document.getElementById("loading-bar").style.width = progress + "%";
+};
+
+// Hide the loading bar once loading is complete
+loading_manager.onLoad = () => {
+  const loading_bar_container = document.getElementById(
+    "loading-bar-container"
+  );
+  gsap.to(loading_bar_container, {
+    opacity: 0,
+    duration: 0.5,
+    onComplete: () => {
+      loading_bar_container.style.display = "none";
+    },
+  });
+};
+
+/**
  * Responsible of initializing 3JS necessary elements
  */
 
-const draco_loader = new DRACOLoader();
+// Initialize DracoLoader and GLTFLoader with LoadingManager
+const draco_loader = new DRACOLoader(loading_manager);
 draco_loader.setDecoderPath("draco/");
 
-const gltf_loader = new GLTFLoader();
+const gltf_loader = new GLTFLoader(loading_manager);
 gltf_loader.setDRACOLoader(draco_loader);
 
 let current_model = null; // Reference to the currently loaded model

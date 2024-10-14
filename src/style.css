@@ -1,19 +1,38 @@
-*
-{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
 
 html,
-body
-{
-    overflow: hidden;
+body {
+  overflow: hidden;
 }
 
-.webgl
-{
-    position: fixed;
-    top: 0;
-    left: 0;
-    outline: none;
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+
+/* Loading bar container */
+#loading-bar-container {
+  width: 60%; /* You can adjust the width of the loading bar */
+  height: 8px;
+  background: #d8ddd9;
+  position: fixed; /* Ensure it's positioned relative to the viewport */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center horizontally and vertically */
+  display: none; /* Hidden initially */
+  z-index: 1000; /* Ensure it's above other content */
+  border-radius: 4px; /* Apply border radius to the container */
+}
+
+/* The actual loading bar */
+#loading-bar {
+  width: 0;
+  height: 100%;
+  background: #2f2f2f;
+  border-radius: 4px; /* Apply border radius to the container */
 }
