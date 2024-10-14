@@ -78,7 +78,7 @@ export const customizations = {
         position: new THREE.Vector3(12.3, 3, 0),
       },
       "solar-panel": {
-        position: new THREE.Vector3(0, 8, 10),
+        position: new THREE.Vector3(0, 8, -10),
       },
     },
     update_function: (option) => {
