@@ -218,7 +218,6 @@ export const handle_messages = (scene, camera, controls, renderer) => {
   const send_ready_message = () => {
     if (keep_sending_ready_message) {
       window.parent.postMessage({ type: "threejs-ready" }, "*");
-
       setTimeout(send_ready_message, 500); // Retry every 500ms
     }
   };

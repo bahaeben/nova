@@ -13,6 +13,19 @@ import {
 } from "./update_functions.js";
 import { customizations } from "./customizations.js";
 
+// Get the drag clue element
+const dragClue = document.getElementById("drag-clue");
+
+// Function to fade in the clue when the model finishes loading
+const showDragClue = () => {
+  dragClue.style.opacity = "1"; // Fade in
+};
+
+// Function to fade out the clue when the user drags the model
+const hideDragClue = () => {
+  dragClue.style.opacity = "0"; // Fade out
+};
+
 /**
  * Initialize loading manager and loading state
  */
@@ -48,6 +61,7 @@ loading_manager.onLoad = () => {
       loading_bar_container.style.display = "none";
     },
   });
+  showDragClue(); // Call the function directly when everything is loaded
 };
 
 /**
@@ -158,3 +172,10 @@ export const load_model_with_customizations = (
     renderer.render(scene, camera); // Force render after loading the model
   });
 };
+
+// Detect user drag interaction with the preview window
+const previewWindow = document.querySelector("#canvas"); // Replace with your actual preview window selector
+
+previewWindow.addEventListener("mousedown", () => {
+  hideDragClue(); // Hide the clue once the user starts dragging
+});
