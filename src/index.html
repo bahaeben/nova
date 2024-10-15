@@ -13,11 +13,39 @@
     />
   </head>
   <body>
-    <canvas class="webgl"></canvas>
+    <canvas
+      class="webgl"
+      id="threejs"
+    ></canvas>
     <!-- Loading bar -->
     <div id="loading-bar-container">
       <div id="loading-bar"></div>
     </div>
+
+    <div
+      id="drag-clue"
+      class="drag-clue"
+    >
+      <div style="width: 20px; height: 20px; position: relative">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="Icon / move">
+            <path
+              id="icon"
+              d="M14.9998 9.16663H10.8332V4.99996H13.3332L9.99984 1.66663L6.6665 4.99996H9.1665V9.16663H4.99984V6.66663L1.6665 9.99996L4.99984 13.3333V10.8333H9.1665V15H6.6665L9.99984 18.3333L13.3332 15H10.8332V10.8333H14.9998V13.3333L18.3332 9.99996L14.9998 6.66663V9.16663Z"
+              fill="#497484"
+            />
+          </g>
+        </svg>
+      </div>
+      <div class="drag-message">Drag around the preview window</div>
+    </div>
+
     <script
       type="module"
       src="./main.js"
