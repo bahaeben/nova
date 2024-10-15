@@ -211,6 +211,24 @@ const update_camera_rotation = (option, camera, controls) => {
 };
 
 export const handle_messages = (scene, camera, controls, renderer) => {
+  // Flag to control sending the ready message
+  let keep_sending_ready_message = true;
+
+  // Function to continuously send the "threejs-ready" message until initialization happens
+  const send_ready_message = () => {
+    if (keep_sending_ready_message) {
+      window.parent.postMessage({ type: "threejs-ready" }, "*");
+      console.log("threejs-ready");
+
+      setTimeout(send_ready_message, 500); // Retry every 500ms
+    }
+  };
+
+  // Start sending the "threejs-ready" message when the page loads
+  window.addEventListener("DOMContentLoaded", (event) => {
+    send_ready_message();
+  });
+
   window.addEventListener("message", (event) => {
     if (event.data.type === "updateOption") {
       const option = event.data.option;
@@ -236,6 +254,9 @@ export const handle_messages = (scene, camera, controls, renderer) => {
         renderer,
         controls
       );
+
+      // Stop sending the "threejs-ready" message
+      keep_sending_ready_message = false;
     }
   });
 };

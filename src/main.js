@@ -9,6 +9,3 @@ animate(camera, controls, renderer, scene);
 
 // Set up message handling from Webflow
 handle_messages(scene, camera, controls, renderer);
-
-// Notify Webflow (parent) that the scene is ready
-window.parent.postMessage({ type: "threejs-ready" }, "*");
