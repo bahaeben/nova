@@ -176,6 +176,9 @@ export const load_model_with_customizations = (
 // Detect user drag interaction with the preview window
 const previewWindow = document.querySelector("#canvas"); // Replace with your actual preview window selector
 
-previewWindow.addEventListener("mousedown", () => {
+previewWindow.addEventListener("mousemove", () => {
+  hideDragClue(); // Hide the clue once the user starts dragging
+});
+previewWindow.addEventListener("touchmove", () => {
   hideDragClue(); // Hide the clue once the user starts dragging
 });
