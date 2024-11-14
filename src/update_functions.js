@@ -24,7 +24,7 @@ for (let container_num = 1; container_num <= 2; container_num++) {
 }
 
 export const glass_material = new THREE.MeshStandardMaterial({
-  color: 0x9e947f, // Light blue tint
+  color: 0x000000,
   metalness: 0.1,
   roughness: 0.1,
   opacity: 0.5, // Adjust opacity to make it transparent
