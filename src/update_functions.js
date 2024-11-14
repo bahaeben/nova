@@ -31,6 +31,14 @@ export const glass_material = new THREE.MeshStandardMaterial({
   transparent: true,
 });
 
+export const shadow_material = new THREE.MeshStandardMaterial({
+  color: 0x000000, // Black color for shadow
+  metalness: 0.0, // No metallic reflection
+  roughness: 1.0, // Max roughness to avoid any shine
+  opacity: 0.4, // Adjust for desired transparency level
+  transparent: true,
+});
+
 // Getter and Setter for metal_material
 export const get_metal_material = () => metal_material;
 export const set_metal_material = (material) => {

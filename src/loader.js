@@ -5,6 +5,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import {
   glass_material,
+  shadow_material,
   finish_wood_meshes,
   exterior_metal_meshes,
   set_solar_panel_group,
@@ -97,6 +98,9 @@ export const load_model_with_customizations = (
     let found_metal = false;
     gltf.scene.traverse((child) => {
       if (child.isMesh) {
+        if (child.material && child.material.name.includes("shadow")) {
+          child.material = shadow_material;
+        }
         if (child.material && child.material.name.includes("glass")) {
           child.material = glass_material;
         }
