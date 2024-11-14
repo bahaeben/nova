@@ -28,16 +28,6 @@ export const init_scene = () => {
   camera.position.set(9, 3, 9);
   scene.add(camera);
 
-  // Perspective Camera
-  //   const camera = new THREE.PerspectiveCamera(
-  //     60, // Field of view
-  //     sizes.width / sizes.height, // Aspect ratio
-  //     0.1, // Near clipping plane
-  //     1000 // Far clipping plane
-  //   );
-  //   camera.position.set(9, 3, 9);
-  //   scene.add(camera);
-
   const controls = new OrbitControls(camera, canvas);
   controls.enableDamping = true;
   controls.minPolarAngle = Math.PI / 6;
@@ -52,6 +42,7 @@ export const init_scene = () => {
     antialias: true,
     alpha: true,
   });
+
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -72,6 +63,7 @@ export const init_scene = () => {
       camera.top = frustum_size / 2;
       camera.bottom = -frustum_size / 2;
     }
+
     camera.updateProjectionMatrix();
 
     renderer.setSize(sizes.width, sizes.height);
@@ -85,20 +77,12 @@ export const init_scene = () => {
   rgbe_loader.load("symmetrical_garden_02_1k.hdr", (environment_map) => {
     environment_map.mapping = THREE.EquirectangularReflectionMapping;
     scene.environment = environment_map;
-    scene.environmentIntensity = 2;
+    scene.environmentIntensity = 1.5;
   });
 
   const directional_light = new THREE.DirectionalLight(0xffffff, 1.5);
-  directional_light.position.set(-5, 5, 10);
+  directional_light.position.set(-5, 0, 10);
   scene.add(directional_light);
-
-  const key_light = new THREE.DirectionalLight(0xffffff, 0.5);
-  key_light.position.set(10, 5, 2);
-  scene.add(key_light);
-
-  const fill_light = new THREE.DirectionalLight(0xffffff, 0.5);
-  fill_light.position.set(0, 5, -10);
-  scene.add(fill_light);
 
   return { camera, controls, renderer, scene };
 };

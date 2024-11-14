@@ -50,13 +50,13 @@ export const update_siding_color = (color) => {
       color_value = "#2F2F2F";
       break;
     case "Slate Grey":
-      color_value = "#808080";
+      color_value = "#3E4E59";
       break;
     case "Chestnut Brown":
-      color_value = "#954535";
+      color_value = "#763939";
       break;
     case "Warm Beige":
-      color_value = "#B48546";
+      color_value = "#80652F";
       break;
     default:
       console.warn(`Unhandled siding color: ${color}`);
