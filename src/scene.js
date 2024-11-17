@@ -104,7 +104,7 @@ export const animate = (camera, controls, renderer, scene, update_pointers) => {
 
   tick(); // Start the animation loop
 
-  // setupDebugRaycaster(scene, camera, renderer);
+  setupDebugRaycaster(scene, camera, renderer);
 };
 
 //debug stuff

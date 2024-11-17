@@ -33,12 +33,12 @@ export const customizations = {
       },
     },
     pointer_positions: {
-      "siding-color": new THREE.Vector3(-2.8, 2.3, 0.5),
-      "wood-finish": new THREE.Vector3(-2.8, 1.2, 0.5),
-      "side-1": new THREE.Vector3(1.48, 1.2, 0.5),
-      "side-4": new THREE.Vector3(-1.48, 1.2, -2.9),
-      "side-6": new THREE.Vector3(3.5, 1.2, -1),
-      "solar-panel": new THREE.Vector3(0.1, 3.4, -0.9),
+      "siding-color": new THREE.Vector3(-2.8, 2.3, 0.3),
+      "wood-finish": new THREE.Vector3(-2.8, 1.2, 0.3),
+      "side-1": new THREE.Vector3(1.48, 1.2, 0.3),
+      "side-4": new THREE.Vector3(-1.48, 1.2, -2.65),
+      "side-6": new THREE.Vector3(3.25, 1.2, -1),
+      "solar-panel": new THREE.Vector3(0, 3, -1.15),
     },
     update_function: (option) => {
       switch (option.type) {
@@ -89,6 +89,15 @@ export const customizations = {
       "solar-panel": {
         position: new THREE.Vector3(0, 8, -10),
       },
+    },
+    pointer_positions: {
+      "siding-color": new THREE.Vector3(-2.8, 2.3, 2.9),
+      "wood-finish": new THREE.Vector3(-2.8, 1.2, 2.9),
+      "side-4": new THREE.Vector3(-1.48, 1.2, -2.7),
+      "side-6": new THREE.Vector3(3.2, 1.2, -1),
+      "side-7": new THREE.Vector3(1.48, 1.2, 2.9),
+      "side-12": new THREE.Vector3(3.2, 1.2, 1),
+      "solar-panel": new THREE.Vector3(0, 3, -1.15),
     },
     update_function: (option) => {
       switch (option.type) {
@@ -143,6 +152,15 @@ export const customizations = {
       "solar-panel": {
         position: new THREE.Vector3(0, 8, 10),
       },
+    },
+    pointer_positions: {
+      "siding-color": new THREE.Vector3(-0.2, 5, 3.3),
+      "wood-finish": new THREE.Vector3(-0.2, 4, 3.3),
+      "side-4": new THREE.Vector3(-1.48, 1.2, -2.7),
+      "side-6": new THREE.Vector3(3.3, 1.2, -1),
+      "side-7": new THREE.Vector3(-3.3, 4, 2),
+      "side-12": new THREE.Vector3(-1.8, 4, 3.9),
+      "solar-panel": new THREE.Vector3(-1.8, 5.6, 0.6),
     },
     update_function: (option) => {
       switch (option.type) {
@@ -298,7 +316,7 @@ export const update_pointers = (camera, renderer, raycaster) => {
       // If no intersections, assume pointer is visible
       pointerDiv.classList.remove("hidden");
     } else {
-      const distanceToIntersection = intersects[0].distance;
+      const distanceToIntersection = intersects[0].distance + 0.7;
       const distanceToPointer = camera.position.distanceTo(position3D);
 
       if (distanceToPointer < distanceToIntersection) {

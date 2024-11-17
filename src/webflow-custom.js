@@ -162,9 +162,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function hidePanel() {
     hideElement(designerPanel);
-    panelCategories.forEach((category) => {
-      category.style.display = "none";
-    });
+    setTimeout(() => {
+      panelCategories.forEach((category) => {
+        category.style.display = "none";
+      });
+    }, 300);
   }
 
   function showPanelForCategory(category) {
