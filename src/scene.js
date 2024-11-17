@@ -77,7 +77,7 @@ export const init_scene = () => {
   rgbe_loader.load("symmetrical_garden_02_1k.hdr", (environment_map) => {
     environment_map.mapping = THREE.EquirectangularReflectionMapping;
     scene.environment = environment_map;
-    scene.environmentIntensity = 1.5;
+    scene.environmentIntensity = 2;
   });
 
   const directional_light = new THREE.DirectionalLight(0xffffff, 1.5);

@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const modelDefaults = defaultOptions[modelName] || {};
     let updated = false;
+
     Object.keys(modelDefaults).forEach((key) => {
       if (!urlParams.has(key)) {
         urlParams.set(key, modelDefaults[key]);
@@ -100,8 +101,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function updateOptionClasses(category, value) {
+    // Select all options in both layouts for the given category
+    const options = document.querySelectorAll(
+      `.customization-category[data-category="${category}"] .option`
+    );
+
+    options.forEach((option) => {
+      const isSelected = option.getAttribute("data-value") === value;
+      option.classList.toggle("selected", isSelected);
+
+      // Update the dynamic text for the category
+      if (isSelected) {
+        const dynamicText = option
+          .closest(".customization-category")
+          .querySelector(".category-value");
+        if (dynamicText) {
+          dynamicText.textContent = value;
+        }
+      }
+    });
+  }
+
   function setSelectedClasses() {
     const urlParams = new URLSearchParams(window.location.search);
+
     // Update the link text and displayed URL
     document.getElementById("current-link").textContent = `${
       window.location.origin
@@ -111,34 +135,45 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("copy-icon").style.display = "inline";
     document.getElementById("checkmark-icon").style.display = "none";
 
-    urlParams.forEach((value, key) => {
-      const option = document.querySelector(
-        `.customization-category[data-category="${key}"] .option[data-value="${value}"]`
-      );
-      if (option) {
-        option.classList.add("selected");
-        const dynamicText = option
-          .closest(".customization-category")
-          .querySelector(".category-value");
-        dynamicText.textContent = value;
-      }
+    // Synchronize selected classes across layouts
+    urlParams.forEach((value, category) => {
+      updateOptionClasses(category, value);
     });
   }
 
+  function showElement(element) {
+    element.style.display = "flex"; // Make it visible in layout
+    element.style.opacity = "0";
+    // Add a tiny delay to allow the browser to render the new layout
+    setTimeout(() => {
+      element.style.opacity = "1"; // Trigger the fade-in effect
+    }, 50); // 10ms delay ensures the transition works
+  }
+
+  function hideElement(element) {
+    element.style.opacity = "1";
+    setTimeout(() => {
+      element.style.opacity = "0"; // Trigger the fade-in effect
+    }, 10); // 10ms delay ensures the transition works
+    setTimeout(() => {
+      element.style.display = "none"; // Hide after the fade animation
+    }, 310); // Match the transition duration (0.3s)
+  }
+
   function hidePanel() {
-    designerPanel.style.display = "none";
+    hideElement(designerPanel);
     panelCategories.forEach((category) => {
       category.style.display = "none";
     });
   }
 
   function showPanelForCategory(category) {
-    designerPanel.style.display = "flex"; // Show the panel
+    showElement(designerPanel);
     panelCategories.forEach((catDiv) => {
       if (catDiv.getAttribute("data-category") === category) {
-        catDiv.style.display = "flex"; // Show the matching category
+        catDiv.style.display = "flex";
       } else {
-        catDiv.style.display = "none"; // Hide other categories
+        catDiv.style.display = "none";
       }
     });
   }
@@ -152,25 +187,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const category = this.closest(".customization-category").getAttribute(
         "data-category"
       );
-
-      // Deselect all options in the same category
-      document
-        .querySelectorAll(
-          `.customization-category[data-category="${category}"] .option`
-        )
-        .forEach((opt) => {
-          opt.classList.remove("selected");
-        });
-
-      // Select the clicked option
-      this.classList.add("selected");
-
-      // Update the text beside the label with the selected option value
       const value = this.getAttribute("data-value");
-      const dynamicText = this.closest(".customization-category").querySelector(
-        ".category-value"
-      );
-      dynamicText.textContent = value;
+
+      // Synchronize options across layouts
+      updateOptionClasses(category, value);
 
       // Update URL with the selected options
       updateUrl({ [category]: value });
@@ -185,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (event.data.type === "threejs-ready") {
       // Initialize Three.js scene when ready
       initializeThreeJsScene();
-      setSelectedClasses();
+      setSelectedClasses(); // Synchronize classes for both layouts
     } else if (event.data.type === "pointer-selected") {
       const category = event.data.category;
 
@@ -221,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
     hidePanel();
 
     // Send a "panelClosed" message to Three.js
-    window.postMessage({ type: "panelClosed" }, "*");
+    iframe.contentWindow.postMessage({ type: "panelClosed" }, "*");
   });
 
   // Designer Mode Functionalities
