@@ -77,14 +77,12 @@ export const init_scene = () => {
   rgbe_loader.load("symmetrical_garden_02_1k.hdr", (environment_map) => {
     environment_map.mapping = THREE.EquirectangularReflectionMapping;
     scene.environment = environment_map;
-    scene.environmentIntensity = 2;
+    scene.environmentIntensity = 1.8;
   });
 
   const directional_light = new THREE.DirectionalLight(0xffffff, 1.5);
   directional_light.position.set(-5, 0, 10);
   scene.add(directional_light);
-
-  // setupDebugRaycaster(scene, camera, renderer);
 
   return { camera, controls, renderer, scene };
 };
@@ -104,7 +102,7 @@ export const animate = (camera, controls, renderer, scene, update_pointers) => {
 
   tick(); // Start the animation loop
 
-  setupDebugRaycaster(scene, camera, renderer);
+  // setupDebugRaycaster(scene, camera, renderer);
 };
 
 //debug stuff
