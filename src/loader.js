@@ -12,7 +12,7 @@ import {
   set_metal_material,
   containers,
 } from "./update_functions.js";
-import { customizations } from "./customizations.js";
+import { customizations, add_intersectable_object } from "./customizations.js";
 
 // Get the drag clue element
 const dragClue = document.getElementById("drag-clue");
@@ -100,6 +100,7 @@ export const load_model_with_customizations = (
       if (child.isMesh) {
         if (child.material && child.material.name.includes("shadow")) {
           child.material = shadow_material;
+          add_intersectable_object(child);
         }
         if (child.material && child.material.name.includes("glass")) {
           child.material = glass_material;

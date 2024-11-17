@@ -84,17 +84,52 @@ export const init_scene = () => {
   directional_light.position.set(-5, 0, 10);
   scene.add(directional_light);
 
+  // setupDebugRaycaster(scene, camera, renderer);
+
   return { camera, controls, renderer, scene };
 };
 
-export const animate = (camera, controls, renderer, scene) => {
+const raycaster = new THREE.Raycaster();
+
+export const animate = (camera, controls, renderer, scene, update_pointers) => {
   const clock = new THREE.Clock();
 
   const tick = () => {
     controls.update(); // Update camera controls
     renderer.render(scene, camera); // Render the scene
+
+    update_pointers(camera, renderer, raycaster);
     window.requestAnimationFrame(tick); // Continue the animation loop
   };
 
   tick(); // Start the animation loop
+
+  // setupDebugRaycaster(scene, camera, renderer);
 };
+
+//debug stuff
+function setupDebugRaycaster(scene, camera, renderer) {
+  // Create a Raycaster and a Vector2 for the mouse position
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+
+  // Add an event listener for mouse clicks
+  renderer.domElement.addEventListener("click", (event) => {
+    // Calculate mouse position in normalized device coordinates (-1 to +1)
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // Update the raycaster with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+
+    // Get the list of intersected objects
+    const intersects = raycaster.intersectObjects(scene.children, true);
+
+    if (intersects.length > 0) {
+      const firstHit = intersects[0];
+      const { point, object } = firstHit;
+
+      console.log(`Hit coordinates: x=${point.x}, y=${point.y}, z=${point.z}`);
+    }
+  });
+}

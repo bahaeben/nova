@@ -37,6 +37,7 @@ export const shadow_material = new THREE.MeshStandardMaterial({
   roughness: 1.0, // Max roughness to avoid any shine
   opacity: 0.4, // Adjust for desired transparency level
   transparent: true,
+  side: THREE.DoubleSide, // Enable both sides for raycasting
 });
 
 // Getter and Setter for metal_material

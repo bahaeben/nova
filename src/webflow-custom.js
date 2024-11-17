@@ -1,6 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
   const modelName = window.location.pathname.split("/").pop(); // Extract model name from URL
 
+  //All needed elements
+  const iframe = document.querySelector("#threejs-iframe");
+  const designerButton = document.getElementById("designer-button");
+  const customizationPreview = document.getElementById("customization-preview");
+  const checkoutElement = document.getElementById("checkout");
+  var copyButton = document.getElementById("copy-button");
+  var copyIcon = document.getElementById("copy-icon");
+  var checkmarkIcon = document.getElementById("checkmark-icon");
+
+  let isDesignerModeActive = false;
+  const designerPanel = document.getElementById("panel");
+  const panelCategories = document.querySelectorAll(".designer-panel-category");
+  const panelCloseButton = document.querySelector(".panel-close-button");
+
   const defaultOptions = {
     "solo-haven": {
       "siding-color": "Space Black",
@@ -57,8 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
       options[key] = value;
     });
 
-    const iframe = document.querySelector("#threejs-iframe");
-
     iframe.contentWindow.postMessage(
       { type: "initializeModel", modelName: modelName, options: options },
       "*"
@@ -66,13 +78,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateThreeJsScene(category, value) {
-    const iframe = document.querySelector("#threejs-iframe");
-    if (iframe) {
-      iframe.contentWindow.postMessage(
-        { type: "updateOption", option: { type: category, value: value } },
-        "*"
-      );
-    }
+    iframe.contentWindow.postMessage(
+      { type: "updateOption", option: { type: category, value: value } },
+      "*"
+    );
   }
 
   function setDefaultOptions() {
@@ -88,9 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (updated) {
       const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
       history.replaceState(null, "", newUrl);
-      return true; // URL was updated
     }
-    return false; // URL was not updated
   }
 
   function setSelectedClasses() {
@@ -118,8 +125,26 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function hidePanel() {
+    designerPanel.style.display = "none";
+    panelCategories.forEach((category) => {
+      category.style.display = "none";
+    });
+  }
+
+  function showPanelForCategory(category) {
+    designerPanel.style.display = "flex"; // Show the panel
+    panelCategories.forEach((catDiv) => {
+      if (catDiv.getAttribute("data-category") === category) {
+        catDiv.style.display = "flex"; // Show the matching category
+      } else {
+        catDiv.style.display = "none"; // Hide other categories
+      }
+    });
+  }
+
   // Initialize URL with default options if necessary
-  const urlUpdated = setDefaultOptions();
+  setDefaultOptions();
 
   const options = document.querySelectorAll(".option");
   options.forEach((option) => {
@@ -161,6 +186,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // Initialize Three.js scene when ready
       initializeThreeJsScene();
       setSelectedClasses();
+    } else if (event.data.type === "pointer-selected") {
+      const category = event.data.category;
+
+      // Show the panel and the specific category
+      showPanelForCategory(category);
     }
   });
 
@@ -171,10 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Copy button functionality
-  var copyButton = document.getElementById("copy-button");
-  var copyIcon = document.getElementById("copy-icon");
-  var checkmarkIcon = document.getElementById("checkmark-icon");
-
   copyButton.addEventListener("click", function () {
     var linkText = document.getElementById("current-link").textContent;
     navigator.clipboard
@@ -187,5 +213,32 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(function (err) {
         console.error("Failed to copy: ", err);
       });
+  });
+
+  // Handle close button click
+  panelCloseButton.addEventListener("click", () => {
+    // Hide the panel and all its categories
+    hidePanel();
+
+    // Send a "panelClosed" message to Three.js
+    window.postMessage({ type: "panelClosed" }, "*");
+  });
+
+  // Designer Mode Functionalities
+  designerButton.addEventListener("click", function () {
+    // Toggle Designer Mode state
+    isDesignerModeActive = !isDesignerModeActive;
+
+    if (isDesignerModeActive) {
+      // Enable fullscreen mode
+      customizationPreview.classList.add("is-fullscreen");
+      iframe.contentWindow.postMessage({ type: "enterDesignerMode" }, "*");
+    } else {
+      // Exit fullscreen mode
+      customizationPreview.classList.remove("is-fullscreen");
+      iframe.contentWindow.postMessage({ type: "exitDesignerMode" }, "*");
+      checkoutElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      hidePanel();
+    }
   });
 });
